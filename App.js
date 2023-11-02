@@ -1,20 +1,62 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+import { Button, Icon } from "react-native-elements";
+import UserList from "./components/UserList";
+import UserDetails from "./components/UserDetails";
+import UserForm from "./components/UserForm";
 
 export default function App() {
+  const Stack = createStackNavigator();
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="UserList"
+        screenOptions={screenOptions}
+      >
+        <Stack.Screen
+          name="UserList"
+          component={UserList}
+          options={({ navigation }) => {
+            return {
+              title: "Lista de Alunos",
+              headerRight: () => (
+                <Button
+                  onPress={() => navigation.navigate("UserForm")}
+                  type="clear"
+                  icon={<Icon name="add" size={25} color="white" />}
+                />
+              ),
+            };
+          }}
+        />
+        <Stack.Screen
+          name="UserDetails"
+          component={UserDetails}
+          options={{
+            title: "Dados do usuário",
+          }}
+        />
+        <Stack.Screen
+          name="UserForm"
+          component={UserForm}
+          options={{
+            title: "Formulário de Usuários",
+          }}
+        />
+
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const screenOptions = {
+  headerStyle: {
+    backgroundColor: "#336699",
   },
-});
+  headerTintColor: "#fff",
+  headerTitleStyle: {
+    fontWeight: "bold",
+  },
+};
